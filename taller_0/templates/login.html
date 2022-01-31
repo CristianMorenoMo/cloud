@@ -1,0 +1,34 @@
+<!DOCTYPE  html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login</title>
+    <!-- BOOSTSTRAP 4-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css">
+    <!-- MAIN CSS-->
+    <link rel="stylesheet" href="{{url_for('static',filename='login.css')}}">
+</head>
+<body>
+    <main>
+        <h1 class="display-4 text-center">Login</h1>
+        <div class="row">
+            <div class = "col-md-4 offset-md-4 my-auto">
+                <div class="card">
+                        <div class="card-header">
+                            <form class="register-form" method="get" action="/sign_in">
+                                <div class="from-group">
+                                    <input type="text" name="emailLogin" requires placeholder="email" class="font-control" autofocus/>
+                                    <input type="text" name="passwordLogin" requires placeholder="password" class="font-control" autofocus/>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Ingresar</button>
+                            </form>
+                            <a href="register.html" class="btn btn-default">Sign up</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
