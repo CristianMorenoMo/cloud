@@ -43,12 +43,12 @@ def sign_in():
     if query.password == password:
         session['email'] = email
         return redirect(url_for('Index'))
-            #Response("{'menssage':'Session start'}",status=201,mimetype='application/json')
     return redirect(url_for('Index'))
-        #Response("{'menssage':'Email or password not found'}", status=404, mimetype='application/json')
 
 @app.route('/sign_up',methods=['GET','POST'])
 def sign_up():
+    if session['email'] is not None:
+       session.clear()
     if request.form.get('emailRe') is not None:
         email = request.form["emailRe"]
         query = Register.query.filter_by(email= email).first()
@@ -58,7 +58,7 @@ def sign_up():
                                 name=request.form["nameRe"])
             db.session.add(register)
             db.session.commit()
-            return redirect(url_for('login.html'))
+            return render_template('login.html')
         else:
             return Response("{'menssage':'Email or password not found'}", status=404, mimetype='application/json')
     else:
@@ -70,12 +70,13 @@ def sign_up():
                                 name=request.json.get("name"))
             db.session.add(register)
             db.session.commit()
-            return redirect(url_for('login.html'))
+            return render_template('login.html')
         else:
             return Response("{'menssage':'Email or password not found'}", status=404, mimetype='application/json')
 
 @app.route('/create-task',methods=['POST'])
 def create():
+    print(session['email'])
     if request.form.get('content') is not None:
         task = Task(date_event = datetime.datetime.now(),
                     content = request.form['content'],
@@ -83,7 +84,16 @@ def create():
         db.session.add(task)
         db.session.commit()
         return redirect(url_for('Index'))
-            #Response("{'menssage':'data add'}",status=201,mimetype='application/json')
+    elif request.json.get('content') is not None:
+        task = Task(date_event = datetime.datetime.now(),
+                    content = request.json.get('content'),
+                    email=session['email'])
+        db.session.add(task)
+        db.session.commit()
+        return redirect(url_for('Index'))
+
+    else:
+        return Response("{'menssage':'data not add'}",status=401,mimetype='application/json')
 
 @app.route('/delete/<id>')
 def delete(id):
@@ -95,6 +105,10 @@ def delete(id):
 def logout():
     session.clear()
     return redirect(url_for('Index'))
+
+@app.route('/register',methods=['POST','GET'])
+def register():
+    return render_template('register.html')
 
 if __name__ == '__main__':
     app.run(port=8080,debug=True)
