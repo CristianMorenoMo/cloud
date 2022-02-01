@@ -1,8 +1,9 @@
-from flask import Flask,render_template,request,redirect,url_for,flash,Response
+from flask import Flask,render_template,request,redirect,url_for,Response,session
 from flask_sqlalchemy  import SQLAlchemy
-
+import datetime
 
 app = Flask(__name__)
+app.secret_key = "abcd1234"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/taller_0.db'
 db = SQLAlchemy(app)
 
@@ -13,16 +14,25 @@ class Register(db.Model):
     password = db.Column(db.String(8))
     name = db.Column(db.String(100))
 
+class Task(db.Model):
+    id =  db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(200))
+    content = db.Column(db.String(200))
+    date_event =db.Column(db.DateTime)
 ### create URL and functions
 
 @app.route('/')
 def Index():
-    return render_template('login.html')
-
+    if 'email' in session:
+        tasks = Task.query.filter_by(email= session['email']).order_by(Task.date_event.desc())
+        return render_template('events.html',tasks=tasks)
+    else:
+        return render_template('login.html')
 @app.route('/sign_in',methods=['GET','POST'])
 def sign_in():
     email = ''
     password = ''
+
     if request.args.get('emailLogin'):
         email = request.args.get('emailLogin')
         password = request.args.get('passwordLogin')
@@ -31,8 +41,11 @@ def sign_in():
         password = request.json.get('passwordLogin')
     query = Register.query.filter_by(email=email).first()
     if query.password == password:
-        return Response("{'menssage':'Session start'}",status=201,mimetype='application/json')
-    return Response("{'menssage':'Email or password not found'}", status=404, mimetype='application/json')
+        session['email'] = email
+        return redirect(url_for('Index'))
+            #Response("{'menssage':'Session start'}",status=201,mimetype='application/json')
+    return redirect(url_for('Index'))
+        #Response("{'menssage':'Email or password not found'}", status=404, mimetype='application/json')
 
 @app.route('/sign_up',methods=['GET','POST'])
 def sign_up():
@@ -61,6 +74,28 @@ def sign_up():
         else:
             return Response("{'menssage':'Email or password not found'}", status=404, mimetype='application/json')
 
+@app.route('/create-task',methods=['POST'])
+def create():
+    if request.form.get('content') is not None:
+        task = Task(date_event = datetime.datetime.now(),
+                    content = request.form['content'],
+                    email=session['email'])
+        db.session.add(task)
+        db.session.commit()
+        return redirect(url_for('Index'))
+            #Response("{'menssage':'data add'}",status=201,mimetype='application/json')
+
+@app.route('/delete/<id>')
+def delete(id):
+    task = Task.query.filter_by(id=int(id)).delete()
+    db.session.commit()
+    return redirect(url_for('Index'))
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('Index'))
+
 if __name__ == '__main__':
-    app.run(port=3000)
+    app.run(port=3000,debug=True)
 
