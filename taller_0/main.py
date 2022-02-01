@@ -47,8 +47,6 @@ def sign_in():
 
 @app.route('/sign_up',methods=['GET','POST'])
 def sign_up():
-    if session['email'] is not None:
-       session.clear()
     if request.form.get('emailRe') is not None:
         email = request.form["emailRe"]
         query = Register.query.filter_by(email= email).first()
