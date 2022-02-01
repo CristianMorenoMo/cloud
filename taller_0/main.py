@@ -62,5 +62,5 @@ def sign_up():
             return Response("{'menssage':'Email or password not found'}", status=404, mimetype='application/json')
 
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+    app.run(port=3000)
 
