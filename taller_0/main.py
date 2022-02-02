@@ -24,7 +24,7 @@ class Task(db.Model):
     place = db.Column(db.String(200))
     address = db.Column(db.String(200))
     type = db.Column(db.String(200))
-### create URL and functions
+### create URL and functions$
 
 @app.route('/')
 def Index():
