@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Crear evento</h3>
+    <div class="box">
+        <form method="POST" action="/create_contest" enctype="multipart/form-data">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="namecontest" placeholder="Nombre del evento" autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="date" name="datestart" placeholder="Fecha de inicio" autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="date" name="dateend" placeholder="Fecha de terminaciòn" autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="number" name="award" placeholder="Premio">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="dialog" placeholder="Guion">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="description" placeholder="Descripciòn">
+                </div>
+            </div>
+            <div class="field">
+                        <input type="file" name="file" >
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Crear evento</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

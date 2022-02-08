@@ -1,7 +1,28 @@
-
+<!-- templates/index.html -->
+{% extends "base.html" %}
+{% block content %}
 <h1 class="title">
-  User no login
+  Flask Login Example
 </h1>
 <h2 class="subtitle">
-  test user no login
+  Easy authentication and authorization in Flask.
 </h2>
+<div class="row">
+  <div class="column">
+    <div class="card">
+        <img src="img_avatar.png" alt="Avatar" style="width:100%">
+        <div class="container">
+            <h4><b>John Doe</b></h4>
+            <p>Architect & Engineer</p>
+        </div>
+    </div>
+    <div class="card">
+        <img src="img_avatar.png" alt="Avatar" style="width:100%">
+        <div class="container">
+            <h4><b>John Doe</b></h4>
+            <p>Architect & Engineer</p>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

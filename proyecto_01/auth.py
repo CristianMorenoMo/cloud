@@ -21,7 +21,7 @@ def login_post():
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
     login_user(user, remember=remember)
-    return redirect(url_for('main.profile'))
+    return redirect(url_for('main.index'))
 
 
 @auth.route('/signup')
