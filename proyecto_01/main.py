@@ -29,18 +29,19 @@ def create_contest_post():
     dialog = request.form.get('dialog')
     description = request.form.get('description')
     banner = request.files['file']
+    print(description)
     filename = str(uuid.uuid1()) + '.' + banner.filename.split('.')[-1]
-    banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
     new_contest = Contest(id_user = current_user.id,
                             contest_name = contest_name,
                             banner_name=filename,
                             url_contest='192.168.0.1:8080/abcd',
-                            start_date=datetime.strptime(start_date,format='%Y-%m-%d'),
-                            end_date=datetime.strptime(end_date,format='%Y-%m-%d'),
+                            start_date=datetime.strptime(str(start_date),"%Y-%m-%d"),
+                            end_date=datetime.strptime(str(end_date),"%Y-%m-%d"),
                             award=float(award),
                             dialog=dialog,
-                            description=description)
+                            desciption=description)
     db.session.add(new_contest)
     db.session.commit()
+    banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
     flash('evento cargado.')
     return redirect(url_for('main.index'))
