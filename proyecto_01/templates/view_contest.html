@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+
+
+
+<audio id="mireproductor" src="mi-archivo-de-audio.mp3"></audio>
+<div>
+    <button onclick="document.getElementById('player').play()">Play</button>
+    <button onclick="document.getElementById('player').pause()">Pausa</button>
+    <button onclick="document.getElementById('player').load()">Stop</button>
+    <button onclick="document.getElementById('player').volume += .1">Subir volumen</button>
+    <button onclick="document.getElementById('player').volume -= .1">Bajar volumen</button>
+</div>
+
+<a href="{{ url_for('main.edit_contest')}}" class="navbar-item">Editar</a>
+<a href="" class="navbar-item">Eliminar</a>
+
+{% endblock %}
+
