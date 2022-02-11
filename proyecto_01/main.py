@@ -15,7 +15,8 @@ def index():
     if current_user.is_authenticated is False:
         return render_template('home.html')
     else:
-        return render_template('home_login.html')
+        query=Contest.query.filter_by(id_user=current_user.id).all()
+        return render_template('home_login.html',query = query)
 
 @main.route('/create_contest')
 def create_contest():
@@ -29,7 +30,6 @@ def create_contest_post():
     dialog = request.form.get('dialog')
     description = request.form.get('description')
     banner = request.files['file']
-    print(description)
     filename = str(uuid.uuid1()) + '.' + banner.filename.split('.')[-1]
     new_contest = Contest(id_user = current_user.id,
                             contest_name = contest_name,
@@ -45,3 +45,29 @@ def create_contest_post():
     banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
     flash('evento cargado.')
     return redirect(url_for('main.index'))
+
+
+@main.route('/view_contest')
+def view_contest():
+    return render_template('view_contest.html')
+
+@main.route('/edit_contest')
+def edit_contest():
+    query= Contest.query.filter_by(id_contest=1).all()
+    return render_template('edit_contest.html',query=query)
+
+@main.route('/edit_contest',methods=['POST'])
+def edit_contest_post():
+
+    dict = request.form.to_dict()
+    dict_filter ={k: v for k, v in dict.items() if len(v)!=0}
+
+    #Contest.query.filter(id_contest == client_id_list).update(dict_filter)
+    #db.session.commit()
+    return redirect(url_for('main.index'))
+@main.route('/delete/<id>')
+def delete(id):
+    'aa'
+    #task = Contest.query.filter_by(id_contest=id).delete()
+    #db.session.commit()
+    #return redirect(url_for('main.index'))
