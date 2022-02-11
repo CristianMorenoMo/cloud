@@ -7,8 +7,16 @@ from .models import Contest, Users
 from werkzeug.utils import secure_filename
 
 from . import db
+import os
 
 main = Blueprint('main', __name__)
+
+@main.route('/home')
+def home():
+    folder_name=os.path.join('static','imagen1.jpeg')
+    table=Contest.query.order_by(Contest.start_date).all()
+    
+    return render_template('home.html',imagen_muestra=folder_name,items=table)
 
 @main.route('/')
 def index():
