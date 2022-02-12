@@ -8,23 +8,22 @@ App xx</h1>
 </h2>
 
 <div class=container>
-<a href="{{ url_for('main.create_contest') }}" class="navbar-item">
+<a href="{{ url_for('main.create_contest')}}" class="navbar-item">
      Crear nuevo evento
 </a>
 </div>
 
 <div class="row">
   <div class="column">
+  {% for task in query%}
     <div class="card">
-        {% for task in query%}
-        <img src={{task.banner_name}}  style="width:100%">
+        <img src="/home/camilo/Documents/cloud/proyecto_01/uploads/images/{{task.banner_name}}"  style="width:100%">
         <div class="container">
             <h4><b>{{task.contest_name}}</b></h4>
             <p>{{task.desciption}}</p>
         </div>
-        <a href="{{ url_for('main.view_contest') }}" class="navbar-item">Ver evento</a>
-</a>
-        {% endfor %}
+         <a href="/view_contest/{{task.id_contest}}" class="btn btn-danger btn-sm"> Ver</a>
     </div>
+  {% endfor %}
 </div>
 {% endblock %}

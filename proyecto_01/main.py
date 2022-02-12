@@ -4,16 +4,23 @@ import uuid
 from datetime import datetime
 from .models import Contest, Users
 
-from werkzeug.utils import secure_filename
 
 from . import db
+import os
 
 main = Blueprint('main', __name__)
+
+@main.route('/home')
+def home():
+    folder_name=os.path.join('static','imagen1.jpeg')
+    table=Contest.query.order_by(Contest.start_date).all()
+    
+    return render_template('home.html',imagen_muestra=folder_name,items=table)
 
 @main.route('/')
 def index():
     if current_user.is_authenticated is False:
-        return render_template('home.html')
+        return redirect(url_for('main.home'))
     else:
         query=Contest.query.filter_by(id_user=current_user.id).all()
         return render_template('home_login.html',query = query)
@@ -21,6 +28,7 @@ def index():
 @main.route('/create_contest')
 def create_contest():
     return render_template('create_contest.html')
+
 @main.route('/create_contest', methods=['POST'])
 def create_contest_post():
     contest_name = request.form.get('namecontest')
@@ -47,26 +55,47 @@ def create_contest_post():
     return redirect(url_for('main.index'))
 
 
-@main.route('/view_contest')
-def view_contest():
-    return render_template('view_contest.html')
+@main.route('/apply/')
+@main.route('/apply/<id>')
+def apply(id):
+    print(id)
+    query = Contest.query.filter_by(id_contest=id).first()
+    return render_template('apply.html',items=query)
 
-@main.route('/edit_contest/<id_contest>',methods=['GET'])
-def edit_contest(iid_contestd):
-    query= Contest.query.filter_by(id_contest=id_contest).all()
-    return render_template('edit_contest.html',query=query)
+@main.route('/applied/<id>', methods=['POST'])
+def apply_post(id):
+    contest_id=id
+    apply_name = request.form.get('namecontest')
+    apply_email = request.form.get('email')
+    new_apply= Contest(id_user = current_user.id,
+                            apply_name = apply_name,
+                            apply_email= apply_email)
+    db.session.add(new_apply)
+    db.session.commit()
+    banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
+    flash('evento cargado.')
+    return redirect(url_for('main.home'))
 
-@main.route('/edit_contest/<id_contest>' methods=['POST'])
-def edit_contest_post():
+
+
+@main.route('/view_contest/<id>',methods=['GET', 'POST'])
+def view_contest(id):
+    query = Contest.query.filter_by(id_contest=id).all()
+    return render_template('view_contest.html',query=query)
+
+@main.route('/edit_contest/<id>', methods=['GET','POST'])
+def edit_contest(id):
     dict = request.form.to_dict()
     dict_filter ={k: v for k, v in dict.items() if len(v)!=0}
-
-    #Contest.query.filter(id_contest == client_id_list).update(dict_filter)
-    #db.session.commit()
+    Contest.query.filter(Contest.id_contest == id).update(dict_filter,synchronize_session = False)
+    db.session.commit()
+    flash('evento editado.')
     return redirect(url_for('main.index'))
-@main.route('/delete/<id>')
-def delete(id):
-    'aa'
-    #task = Contest.query.filter_by(id_contest=id).delete()
-    #db.session.commit()
-    #return redirect(url_for('main.index'))
+
+@main.route('/delete_contest/<id>', methods=['GET','POST'])
+def delete_contest(id):
+    Contest.query.filter_by(id_contest=id).delete()
+    db.session.commit()
+    flash('Evento eliminado.')
+    return redirect(url_for('main.index'))
+
