@@ -51,14 +51,13 @@ def create_contest_post():
 def view_contest():
     return render_template('view_contest.html')
 
-@main.route('/edit_contest')
-def edit_contest():
-    query= Contest.query.filter_by(id_contest=1).all()
+@main.route('/edit_contest/<id_contest>',methods=['GET'])
+def edit_contest(iid_contestd):
+    query= Contest.query.filter_by(id_contest=id_contest).all()
     return render_template('edit_contest.html',query=query)
 
-@main.route('/edit_contest',methods=['POST'])
+@main.route('/edit_contest/<id_contest>' methods=['POST'])
 def edit_contest_post():
-
     dict = request.form.to_dict()
     dict_filter ={k: v for k, v in dict.items() if len(v)!=0}
 
