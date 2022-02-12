@@ -65,17 +65,31 @@ def apply(id):
 
 @main.route('/applied/<id>', methods=['POST'])
 def apply_post(id):
-    contest_id=id
-    apply_name = request.form.get('namecontest')
-    apply_email = request.form.get('email')
-    new_apply= Contest(id_user = current_user.id,
-                            apply_name = apply_name,
-                            apply_email= apply_email)
-    db.session.add(new_apply)
+    contest_id = id
+    proposal_name = request.form.get('nameproposal')
+    proposal_email = request.form.get('email')
+    date = request.form.get('datestart')
+    proposal_formato = request.form.get('formato')
+    observacion = request.form.get('observacion')
+    song = request.files['file']
+    song_filename = str(uuid.uuid1()) + '.' + song.filename.split('.')[-1]
+    new_proposal = Contest(id_contest = contest_id,
+                            contest_name = contest_name,
+                            full_name_speaker = proposal_name,
+                            email= proposal_email,
+                            dialogo_sound=filename,
+                            create_date=datetime.strptime(str(date),"%Y-%m-%d"),
+                            formato=proposal_formato,
+                            observacion=observacion)
+    db.session.add(new_proposal)
     db.session.commit()
-    banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
-    flash('evento cargado.')
-    return redirect(url_for('main.home'))
+    if formato==mp3:
+        song.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/dialog_song_convert/' + song_filename)
+    else:
+        song.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/dialog_song/' + song_filename)
+    
+    flash('applied.')
+    return redirect(url_for('home.index'))
 
 
 
