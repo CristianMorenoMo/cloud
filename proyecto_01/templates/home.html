@@ -2,10 +2,10 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 class="title">
-  Flask Login Example
+  Bienvenido
 </h1>
 <h2 class="subtitle">
-  Easy authentication and authorization in Flask.
+ A continuacion se muestran los banners disponibles.
 </h2>
 
 <div >
@@ -14,9 +14,13 @@
 
 <div>
   {%for item in items%}
+  <div style="background-color: brown; margin: 10px;">{{item.banner_name}}</div>
+  <div style="background-color: brown; margin: 10px;">{{item.start_date}}</div>
+  <div style="background-color: brown; margin: 10px;">{{item.end_date}}</div>
+  <div style="background-color: brown; margin: 10px;">{{item.dialog}}</div>
   <div style="background-color: brown; margin: 10px;">{{item.desciption}}</div>
-  <a href="{{url_for('main.create_contest')}}" class="button is-block is-info is-large is-fullwidth">APLICAR A ESTE BANNER</a>
-  
+  <a href="/apply/{{item.id_contest}}" class="button is-block is-info is-large is-fullwidth">APLICAR A ESTE BANNER</a>
+  <!--{{url_for('main.create_contest')}}-->
   {%endfor%}
 </div>
 

@@ -29,6 +29,7 @@ def index():
 @main.route('/create_contest')
 def create_contest():
     return render_template('create_contest.html')
+
 @main.route('/create_contest', methods=['POST'])
 def create_contest_post():
     contest_name = request.form.get('namecontest')
@@ -53,6 +54,29 @@ def create_contest_post():
     banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
     flash('evento cargado.')
     return redirect(url_for('main.index'))
+
+
+@main.route('/apply/')
+@main.route('/apply/<id>')
+def apply(id):
+    print(id)
+    query = Contest.query.filter_by(id_contest=id).first()
+    return render_template('apply.html',items=query)
+
+@main.route('/applied/<id>', methods=['POST'])
+def apply_post(id):
+    contest_id=id
+    apply_name = request.form.get('namecontest')
+    apply_email = request.form.get('email')
+    new_apply= Contest(id_user = current_user.id,
+                            apply_name = apply_name,
+                            apply_email= apply_email)
+    db.session.add(new_apply)
+    db.session.commit()
+    banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
+    flash('evento cargado.')
+    return redirect(url_for('main.home'))
+
 
 
 @main.route('/view_contest')
