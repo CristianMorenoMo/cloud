@@ -4,7 +4,6 @@ import uuid
 from datetime import datetime
 from .models import Contest, Users
 
-from werkzeug.utils import secure_filename
 
 from . import db
 import os
@@ -21,7 +20,7 @@ def home():
 @main.route('/')
 def index():
     if current_user.is_authenticated is False:
-        return render_template('home.html')
+        return redirect(url_for('main.home'))
     else:
         query=Contest.query.filter_by(id_user=current_user.id).all()
         return render_template('home_login.html',query = query)
@@ -93,27 +92,24 @@ def apply_post(id):
 
 
 
-@main.route('/view_contest')
-def view_contest():
-    return render_template('view_contest.html')
+@main.route('/view_contest/<id>',methods=['GET', 'POST'])
+def view_contest(id):
+    query = Contest.query.filter_by(id_contest=id).all()
+    return render_template('view_contest.html',query=query)
 
-@main.route('/edit_contest')
-def edit_contest():
-    query= Contest.query.filter_by(id_contest=1).all()
-    return render_template('edit_contest.html',query=query)
-
-@main.route('/edit_contest',methods=['POST'])
-def edit_contest_post():
-
+@main.route('/edit_contest/<id>', methods=['GET','POST'])
+def edit_contest(id):
     dict = request.form.to_dict()
     dict_filter ={k: v for k, v in dict.items() if len(v)!=0}
-
-    #Contest.query.filter(id_contest == client_id_list).update(dict_filter)
-    #db.session.commit()
+    Contest.query.filter(Contest.id_contest == id).update(dict_filter,synchronize_session = False)
+    db.session.commit()
+    flash('evento editado.')
     return redirect(url_for('main.index'))
-@main.route('/delete/<id>')
-def delete(id):
-    'aa'
-    #task = Contest.query.filter_by(id_contest=id).delete()
-    #db.session.commit()
-    #return redirect(url_for('main.index'))
+
+@main.route('/delete_contest/<id>', methods=['GET','POST'])
+def delete_contest(id):
+    Contest.query.filter_by(id_contest=id).delete()
+    db.session.commit()
+    flash('Evento eliminado.')
+    return redirect(url_for('main.index'))
+

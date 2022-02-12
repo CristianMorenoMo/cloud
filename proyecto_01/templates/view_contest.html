@@ -1,28 +1,69 @@
 {% extends "base.html" %}
 {% block content %}
 
+
+{% for task in query%}
+<!-- seccioon de banner e informacion left. -->
+
 <div class="card" style="width: 18rem;">
   <img class="card-img-top" src="..." alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <h5 class="card-title">{{task.contest_name}} </h5>
+    <p class="card-text">{{task.desciption}}</p>
+    <p class="card-text">{{task.dialog}}</p>
   </div>
 </div>
+{% endfor %}
+
+<!-- seccion de informacion de los aplicantes  derecha. -->
 
 
 
-<audio id="mireproductor" src="mi-archivo-de-audio.mp3"></audio>
-<div>
-    <button onclick="document.getElementById('player').play()">Play</button>
-    <button onclick="document.getElementById('player').pause()">Pausa</button>
-    <button onclick="document.getElementById('player').load()">Stop</button>
-    <button onclick="document.getElementById('player').volume += .1">Subir volumen</button>
-    <button onclick="document.getElementById('player').volume -= .1">Bajar volumen</button>
+<!-- formulario para editar o eliminar un evento. -->
+{% for task in query%}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Editar evento</h3>
+    <div class="box">
+        <form enctype="multipart/form-data">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="namecontest" placeholder="Nombre del evento" value={{task.contest_name}} autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="date" name="datestart" placeholder="Fecha de inicio" value={{task.start_date}} autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="date" name="dateend" placeholder="Fecha de terminaciòn"  value={{task.end_date}} autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="number" name="award" placeholder="Premio" value={{task.award}}>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="dialog" placeholder="Guion" value={{task.dialog}}>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="description" placeholder="Descripciòn" value={{task.desciption}} >
+                </div>
+            </div>
+            <div class="field">
+                        <input type="file" name="file" >
+            </div>
+            <button  type="submit" formaction="/edit_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth">Editar evento</button>
+            <button  formaction="/delete_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth">Eliminar evento</button>
+        </form>
+
+    </div>
 </div>
-
-<a href="{{ url_for('main.edit_contest')}}" class="navbar-item">Editar</a>
-<a href="" class="navbar-item">Eliminar</a>
-
+{% endfor %}
 {% endblock %}
 
