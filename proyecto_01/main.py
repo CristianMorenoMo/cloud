@@ -2,7 +2,7 @@ from flask_login import current_user
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 import uuid
 from datetime import datetime
-from .models import Contest, Users
+from .models import Contest, Users, Proposal
 
 
 from . import db
@@ -50,7 +50,7 @@ def create_contest_post():
                             desciption=description)
     db.session.add(new_contest)
     db.session.commit()
-    banner.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/images/' + filename)
+    banner.save( '/home/jaimeforero/cloud/proyecto_01/uploads/images' + filename)
     flash('evento cargado.')
     return redirect(url_for('main.index'))
 
@@ -62,33 +62,35 @@ def apply(id):
     query = Contest.query.filter_by(id_contest=id).first()
     return render_template('apply.html',items=query)
 
-@main.route('/applied/<id>', methods=['POST'])
-def apply_post(id):
-    contest_id = id
+@main.route('/applied', methods=['POST'])
+def applied_post():
+    contest_id = request.form.get('id_contest')
     proposal_name = request.form.get('nameproposal')
     proposal_email = request.form.get('email')
     date = request.form.get('datestart')
-    proposal_formato = request.form.get('formato')
     observacion = request.form.get('observacion')
     song = request.files['file']
+    proposal_formato = song.filename.split('.')[-1]
     song_filename = str(uuid.uuid1()) + '.' + song.filename.split('.')[-1]
-    new_proposal = Contest(id_contest = contest_id,
-                            contest_name = contest_name,
+    if proposal_formato=='mp3':
+        song.save( '/home/jaimeforero/cloud/proyecto_01/uploads/dialog_song_convert/' + song_filename)
+        state_voice='convert'
+    else:
+        song.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/dialog_song/' + song_filename)
+        state_voice='in process'
+    new_proposal = Proposal(id_contest = contest_id,
                             full_name_speaker = proposal_name,
                             email= proposal_email,
-                            dialogo_sound=filename,
+                            dialogo_sound=song_filename,
                             create_date=datetime.strptime(str(date),"%Y-%m-%d"),
                             formato=proposal_formato,
+                            state_voice=state_voice,
                             observacion=observacion)
     db.session.add(new_proposal)
     db.session.commit()
-    if formato==mp3:
-        song.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/dialog_song_convert/' + song_filename)
-    else:
-        song.save( '/home/camilo/Documents/cloud/proyecto_01/uploads/dialog_song/' + song_filename)
     
     flash('applied.')
-    return redirect(url_for('home.index'))
+    return redirect(url_for('main.home'))
 
 
 
