@@ -5,8 +5,8 @@
 {% for task in query%}
 <!-- seccioon de banner e informacion left. -->
 
-<div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
+<div class="card" style="width: 80rem;">
+  <img class="card-img-top" src="/Users/crimoreno/Documents/cloud/proyecto_01/uploads/images/5e9d371e-8bcb-11ec-be1d-ad19ccafcd59.jpeg" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">{{task.contest_name}} </h5>
     <p class="card-text">{{task.desciption}}</p>
@@ -14,30 +14,41 @@
   </div>
 </div>
 {% endfor %}
-
 <!-- seccion de informacion de los aplicantes  derecha. -->
+
+<!-- seccioon de banner e informacion left. -->
+{% for task in speaker%}
+<div class="card" style="width: 80rem;">
+    <audio controls> <source src="{{task.dialogo_sound}}" type="audio/ogg"> </audio>
+    <div class="card-body">
+    <h5 class="card-title">{{task.full_name_speaker}} </h5>
+    <p class="card-text">{{task.email}}</p>
+    <p class="card-text">{{task.create_date}}</p>
+  </div>
+{% endfor %}
 
 
 
 <!-- formulario para editar o eliminar un evento. -->
 {% for task in query%}
 <div class="column is-4 is-offset-4">
-    <h3 class="title">Editar evento</h3>
+    <h3 class="title">--</h3>
     <div class="box">
-        <form enctype="multipart/form-data">
+        <form method="POST" action="/edit_contest/{{task.id_contest}}">
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="namecontest" placeholder="Nombre del evento" value={{task.contest_name}} autofocus="">
+                    <input class="input is-large" type="text" name="contest_name" placeholder="Nombre del evento" value={{task.contest_name}} autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="date" name="start_date" placeholder="Fecha de inicio" value={{task.start_date}} autofocus="">
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="date" name="datestart" placeholder="Fecha de inicio" value={{task.start_date}} autofocus="">
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="date" name="dateend" placeholder="Fecha de terminaciòn"  value={{task.end_date}} autofocus="">
+                    <input class="input is-large" type="date" name="end_date" placeholder="Fecha de terminaciòn"  value={{task.end_date}} autofocus="">
                 </div>
             </div>
             <div class="field">
@@ -50,20 +61,22 @@
                     <input class="input is-large" type="text" name="dialog" placeholder="Guion" value={{task.dialog}}>
                 </div>
             </div>
-            <div class="field">
+                        <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="description" placeholder="Descripciòn" value={{task.desciption}} >
+                    <input class="input is-large" type="text" name="desciption" placeholder="Descripciòn" value={{task.desciption}} >
                 </div>
             </div>
-            <div class="field">
-                        <input type="file" name="file" >
+             <div class="field">
+                     <input type="file" name="file" >
             </div>
-            <button  type="submit" formaction="/edit_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth">Editar evento</button>
-            <button  formaction="/delete_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth">Eliminar evento</button>
-        </form>
 
+            <button class="button is-block is-info is-large is-fullwidth">edit</button>
+             <button  formaction="/delete_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth">Eliminar evento</button>
+
+        </form>
     </div>
 </div>
 {% endfor %}
-{% endblock %}
 
+
+{% endblock %}
