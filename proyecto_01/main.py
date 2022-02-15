@@ -36,7 +36,7 @@ def create_contest_post():
     description = request.form.get('description')
     banner = request.files['file']
     filename = str(uuid.uuid1()) + '.' + banner.filename.split('.')[-1]
-    banner.save( path_root+ '/proyecto_01/uploads/images' + filename)
+    banner.save( path_root+ '/proyecto_01/static/uploads/images' + filename)
     new_contest = Contest(id_user = current_user.id,
                           contest_name = contest_name,
                           banner_name=filename,
@@ -101,11 +101,11 @@ def applied_post():
     proposal_formato = song.filename.split('.')[-1]
     song_filename = str(uuid.uuid1()) + '.' + song.filename.split('.')[-1]
     if proposal_formato == 'mp3':
-        song.save(path_root + '/proyecto_01/uploads/dialog_song_convert/' + song_filename)
+        song.save(path_root + '/proyecto_01/static/uploads/dialog_song_convert/' + song_filename)
         state_voice = 'convert'
         dialogo_sound_convert = song_filename
     else:
-        song.save(path_root + '/proyecto_01/uploads/dialog_song/' + song_filename)
+        song.save(path_root + '/proyecto_01/static/uploads/dialog_song/' + song_filename)
         state_voice = 'in process'
         dialogo_sound_convert = None
     new_proposal = Proposal(id_contest = int(id_contest),
