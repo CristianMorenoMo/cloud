@@ -8,13 +8,10 @@
  A continuacion se muestran los banners disponibles.
 </h2>
 
-<div >
-    <img src='{{imagen_muestra}}' alt="BANNER" style="width: 25%;height: 25%;"/>
-</div>
-
 <div>
   {%for item in items%}
-  <div style="background-color: brown; margin: 10px;">{{item.banner_name}}</div>
+  <img src='{{imagen_muestra}}' alt="BANNER" style="width: 25%;height: 25%;"/>
+  <div style="background-color: brown; margin: 10px;">{{item.contest_name}}</div>
   <div style="background-color: brown; margin: 10px;">{{item.start_date}}</div>
   <div style="background-color: brown; margin: 10px;">{{item.end_date}}</div>
   <div style="background-color: brown; margin: 10px;">{{item.dialog}}</div>
