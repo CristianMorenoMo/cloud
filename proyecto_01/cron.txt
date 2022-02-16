@@ -1,0 +1,13 @@
+## create crontab
+crontab -e
+----
+# Custom cron job
+MAILTO="ccmorenomojica@gmail.com"
+run aech 5 minu
+*/5  * * * * python  ../cloud/proyecto_01/convert_audio.py
+----
+## verifited crontab
+crontab -l
+
+## verified that crontab is runing
+ps -f

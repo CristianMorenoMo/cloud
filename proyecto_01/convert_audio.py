@@ -34,35 +34,38 @@ query_update = '''
 
 cursor.execute(query)
 records = cursor.fetchall()
-id_proposal = []
-name_file = []
-email_users=[]
-columnNames=[column[0] for column in cursor.description]
-for record in records:
-    id_proposal.append(record[0])
-    name_file.append(record[1])
-    email_users.append(record[2])
+if not records:
+    print('no existen audios para convertir')
+else:
+    id_proposal = []
+    name_file = []
+    email_users=[]
+    columnNames=[column[0] for column in cursor.description]
+    for record in records:
+        id_proposal.append(record[0])
+        name_file.append(record[1])
+        email_users.append(record[2])
 
-name_file_search = name_file[:30]
-arr = os.listdir(path + '/static/uploads/dialog_song')
+    name_file_search = name_file[:30]
+    arr = os.listdir(path + '/static/uploads/dialog_song')
 
-if all([i in arr for i in name_file_search]):
-    i=0
-    for row in name_file_search:
-        name_file= row.split('.')[0] + '.mp3'
-        convert_audio(path_input, path_output, row)
-        query_update_f = query_update.format(name_file =name_file,
-                                             id =id_proposal[i])
-        print(query_update_f)
-        cursor.execute(query_update_f)
-        sqlconnection.commit()
-        print('update file')
-        i = i+1
-        email = 'semestrecloud2022@gmail.com'
-        password = 'Semestre2022cloud'
-        yag = yagmail.SMTP(email,password)
-        yag.send(email_users,
-                 'Audio convertido',
-                 ['Audio convertido'])
-        print('email enviado')
-        break
+    if all([i in arr for i in name_file_search]):
+        i=0
+        for row in name_file_search:
+            name_file= row.split('.')[0] + '.mp3'
+            convert_audio(path_input, path_output, row)
+            query_update_f = query_update.format(name_file =name_file,
+                                                 id =id_proposal[i])
+            print(query_update_f)
+            cursor.execute(query_update_f)
+            sqlconnection.commit()
+            print('update file')
+            email = 'semestrecloud2022@gmail.com'
+            password = 'Semestre2022cloud'
+            yag = yagmail.SMTP(email,password)
+            yag.send(email_users[i],
+                     'Audio convertido',
+                     ['Audio convertido'])
+            print('email enviado')
+            i = i+1
+
