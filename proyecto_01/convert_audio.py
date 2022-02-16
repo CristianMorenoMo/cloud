@@ -36,12 +36,12 @@ cursor.execute(query)
 records = cursor.fetchall()
 id_proposal = []
 name_file = []
-email=[]
+email_users=[]
 columnNames=[column[0] for column in cursor.description]
 for record in records:
     id_proposal.append(record[0])
     name_file.append(record[1])
-    email.append(record[2])
+    email_users.append(record[2])
 
 name_file_search = name_file[:30]
 arr = os.listdir(path + '/static/uploads/dialog_song')
@@ -58,10 +58,11 @@ if all([i in arr for i in name_file_search]):
         sqlconnection.commit()
         print('update file')
         i = i+1
-
-        #yag = yagmail.SMTP(email,password)
-        #yag.send(email[i],
-        #         'Audio convertido',
-        #         ['Audio convertido'])
-        #print('email enviado')
+        email = 'semestrecloud2022@gmail.com'
+        password = 'Semestre2022cloud'
+        yag = yagmail.SMTP(email,password)
+        yag.send(email_users,
+                 'Audio convertido',
+                 ['Audio convertido'])
+        print('email enviado')
         break
