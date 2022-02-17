@@ -8,15 +8,16 @@
  A continuacion se muestran los banners disponibles.
 </h2>
 
-<div>
+<div class="column">
   {%for item in items%}
-  <img src='{{imagen_muestra}}' alt="BANNER" style="width: 25%;height: 25%;"/>
-  <div style="background-color: brown; margin: 10px;">{{item.contest_name}}</div>
-  <div style="background-color: brown; margin: 10px;">{{item.start_date}}</div>
-  <div style="background-color: brown; margin: 10px;">{{item.end_date}}</div>
-  <div style="background-color: brown; margin: 10px;">{{item.dialog}}</div>
-  <div style="background-color: brown; margin: 10px;">{{item.desciption}}</div>
-  <a href="/apply/{{item.id_contest}}" class="button is-block is-info is-large is-fullwidth">APLICAR A ESTE BANNER</a>
+   <div class="card">
+        <img src="/static/uploads/images{{item.banner_name}}"  style="width:30%">
+        <div class="container">
+            <h4><b>{{item.contest_name}}</b></h4>
+            <p>{{item.desciption}}</p>
+        </div>
+          <a href="/apply/{{item.id_contest}}" class="button is-block is-info is-large is-fullwidth">APLICAR A ESTE BANNER</a>
+    </div>
   <!--{{url_for('main.create_contest')}}-->
   {%endfor%}
 </div>

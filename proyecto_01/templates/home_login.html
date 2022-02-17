@@ -8,22 +8,23 @@ App xx</h1>
 </h2>
 
 <div class=container>
-<a href="{{ url_for('main.create_contest')}}" class="navbar-item">
-     Crear nuevo evento
-</a>
+    <div class="column is-3 is-offset-3">
+        <a href="{{ url_for('main.create_contest')}}" class="button is-block is-info is-large is-fullwidth">
+            Crear evento
+        </a>
+    </div>
 </div>
 
-<div class="row">
-  <div class="column">
-  {% for task in query%}
-    <div class="card">
-        <img src="../static/uploads/images/{{task.banner_name}}"  style="width:100%">
+<div class="column">
+  {%for task in query%}
+   <div class="card" style="width:60%">
+        <img src="/static/uploads/images{{task.banner_name}}"  style="width:100%">
         <div class="container">
             <h4><b>{{task.contest_name}}</b></h4>
             <p>{{task.desciption}}</p>
         </div>
-         <a href="/view_contest/{{task.id_contest}}" class="btn btn-danger btn-sm"> Ver</a>
+          <a href="/view_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth" >Ver evento</a>
     </div>
-  {% endfor %}
+  {%endfor%}
 </div>
 {% endblock %}

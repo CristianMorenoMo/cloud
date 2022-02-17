@@ -1,5 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
+
+
+<div class="container">
+  <div class="column is-3 is-offset-3">
+        <div class="card">
+          <img class="card-img-top" src="/static/uploads/images{{items.banner_name}}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{items.contest_name}} </h5>
+            <p class="card-text">{{items.desciption}}</p>
+            <p class="card-text">{{items.dialog}}</p>
+          </div>
+        </div>
+  </div>
+</div>
+
+<div class="container">
+<div class="column is-3 is-offset-3">
+  <div class="col-sm-10">
+       {% for task in speaker%}
+        <div class="card">
+            <audio controls style = "height: 54px" > <source src="/static/uploads/dialog_song_convert/{{task.dialogo_sound}}" type="audio/mp3"> </audio>
+            <audio controls style = "height: 54px" > <source src="/static/uploads/dialog_song/{{task.dialogo_sound}}" type="audio/wav"> </audio>
+            <div class="card-body">
+            <h5 class="card-title">{{task.full_name_speaker}} </h5>
+            <p class="card-text">{{task.email}}</p>
+            <p class="card-text">{{task.create_date}}</p>
+        </div>
+        {% endfor %}
+  </div>
+</div>
+</div>
+
+
+<div class="container">
 <div class="column is-4 is-offset-4">
     <h3 class="title">Aplicar al evento {{items.dialog}}</h3>
     <div class="box">
@@ -32,6 +66,6 @@
             <button class="button is-block is-info is-large is-fullwidth">Aplicar a este evento</button>
         </form>
     </div>
-
+</div>
 </div>
 {% endblock %}

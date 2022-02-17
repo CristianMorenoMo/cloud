@@ -11,9 +11,8 @@ path_root = os.path.abspath(os.curdir)
 
 @main.route('/home')
 def home():
-    folder_name=os.path.join('static','imagen1.jpeg')
     table=Contest.query.order_by(Contest.start_date).all()
-    return render_template('home.html',imagen_muestra=folder_name,items=table)
+    return render_template('home.html', items=table)
 
 @main.route('/')
 def index():
@@ -54,8 +53,7 @@ def create_contest_post():
 @main.route('/view_contest/<id>',methods=['GET', 'POST'])
 def view_contest(id):
     query = Contest.query.filter_by(id_contest=id).all()
-    query_speaker = Proposal.query.filter_by(id_contest=id).all()
-    print(query_speaker)
+    query_speaker = Proposal.query.filter_by(id_contest=id).order_by(Proposal.create_date).all()
     return render_template('view_contest.html',query=query, speaker =query_speaker)
 
 @main.route('/edit_contest/<id>', methods=['GET', 'POST'])
@@ -82,7 +80,8 @@ def delete_contest(id):
 @main.route('/apply/<id>')
 def apply(id):
     query = Contest.query.filter_by(id_contest=id).first()
-    return render_template('apply.html',items=query)
+    query_speaker = Proposal.query.filter_by(id_contest=id).order_by(Proposal.create_date).all()
+    return render_template('apply.html',items=query, speaker=query_speaker)
 
 @main.route('/apply', methods=['GET','POST'])
 def applied_post():

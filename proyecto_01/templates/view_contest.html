@@ -1,38 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-
-
-{% for task in query%}
-<!-- seccioon de banner e informacion left. -->
-
-<div class="card" style="width: 80rem;">
-  <img class="card-img-top" src="/Users/crimoreno/Documents/cloud/proyecto_01/uploads/images/5e9d371e-8bcb-11ec-be1d-ad19ccafcd59.jpeg" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">{{task.contest_name}} </h5>
-    <p class="card-text">{{task.desciption}}</p>
-    <p class="card-text">{{task.dialog}}</p>
+<h1 class="title">
+  Bienvenido
+</h1>
+<div class="container">
+  <div class="column is-3 is-offset-3">
+        {% for task in query%}
+        <div class="card">
+          <img class="card-img-top" src="/static/uploads/images{{task.banner_name}}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{task.contest_name}} </h5>
+            <p class="card-text">{{task.desciption}}</p>
+            <p class="card-text">{{task.dialog}}</p>
+          </div>
+        </div>
+        {% endfor %}
   </div>
 </div>
-{% endfor %}
-<!-- seccion de informacion de los aplicantes  derecha. -->
 
-<!-- seccioon de banner e informacion left. -->
-{% for task in speaker%}
-<div class="card" style="width: 80rem;">
-    <audio controls> <source src="{{task.dialogo_sound}}" type="audio/ogg"> </audio>
-    <div class="card-body">
-    <h5 class="card-title">{{task.full_name_speaker}} </h5>
-    <p class="card-text">{{task.email}}</p>
-    <p class="card-text">{{task.create_date}}</p>
+<div class="container">
+<div class="column is-3 is-offset-3">
+  <div class="col-sm-10">
+       {% for task in speaker%}
+        <div class="card">
+            <audio controls style = "height: 54px" > <source src="/static/uploads/dialog_song_convert/{{task.dialogo_sound}}" type="audio/mp3"> </audio>
+            <audio controls style = "height: 54px" > <source src="/static/uploads/dialog_song/{{task.dialogo_sound}}" type="audio/wav"> </audio>
+            <div class="card-body">
+            <h5 class="card-title">{{task.full_name_speaker}} </h5>
+            <p class="card-text">{{task.email}}</p>
+            <p class="card-text">{{task.create_date}}</p>
+        </div>
+        {% endfor %}
   </div>
-{% endfor %}
+</div>
+</div>
 
 
-
-<!-- formulario para editar o eliminar un evento. -->
+<div class="container">
 {% for task in query%}
 <div class="column is-4 is-offset-4">
-    <h3 class="title">--</h3>
     <div class="box">
         <form method="POST" action="/edit_contest/{{task.id_contest}}">
             <div class="field">
@@ -40,7 +46,6 @@
                     <input class="input is-large" type="text" name="contest_name" placeholder="Nombre del evento" value={{task.contest_name}} autofocus="">
                 </div>
             </div>
-
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="date" name="start_date" placeholder="Fecha de inicio" value={{task.start_date}} autofocus="">
@@ -70,13 +75,19 @@
                      <input type="file" name="file" >
             </div>
 
-            <button class="button is-block is-info is-large is-fullwidth">edit</button>
-             <button  formaction="/delete_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth">Eliminar evento</button>
-
+            <button class="button is-block is-info is-large is-fullwidth">Editar evento</button>
+            <button  formaction="/delete_contest/{{task.id_contest}}" class="button is-block is-info is-large is-fullwidth">Eliminar evento</button>
         </form>
     </div>
 </div>
 {% endfor %}
+</div>
+
+
+
+
+
+
 
 
 {% endblock %}
