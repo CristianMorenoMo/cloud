@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="error">
+                {{ messages }}
+            </div>
+        {% endif %}
+        {% endwith %}
 
 <div class="container">
   <div class="column is-3 is-offset-3">
@@ -26,6 +32,7 @@
             <h5 class="card-title">{{task.full_name_speaker}} </h5>
             <p class="card-text">{{task.email}}</p>
             <p class="card-text">{{task.create_date}}</p>
+            <p class="card-text">{{task.state_voice}}</p>
         </div>
         {% endfor %}
   </div>

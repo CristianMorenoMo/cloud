@@ -53,7 +53,7 @@ def create_contest_post():
 @main.route('/view_contest/<id>',methods=['GET', 'POST'])
 def view_contest(id):
     query = Contest.query.filter_by(id_contest=id).all()
-    query_speaker = Proposal.query.filter_by(id_contest=id).order_by(Proposal.create_date).all()
+    query_speaker = Proposal.query.filter_by(id_contest=id).order_by(Proposal.create_date.desc()).all()
     return render_template('view_contest.html',query=query, speaker =query_speaker)
 
 @main.route('/edit_contest/<id>', methods=['GET', 'POST'])
@@ -80,7 +80,7 @@ def delete_contest(id):
 @main.route('/apply/<id>')
 def apply(id):
     query = Contest.query.filter_by(id_contest=id).first()
-    query_speaker = Proposal.query.filter_by(id_contest=id).order_by(Proposal.create_date).all()
+    query_speaker = Proposal.query.filter_by(id_contest=id).order_by(Proposal.create_date.desc()).all()
     return render_template('apply.html',items=query, speaker=query_speaker)
 
 @main.route('/apply', methods=['GET','POST'])
@@ -119,4 +119,5 @@ def applied_post():
     db.session.add(new_proposal)
     db.session.commit()
     flash('applied.')
+    redirect(url_for('main.applied_post'))
     return redirect(url_for('main.home'))
